@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ja">
+<head>
+    <div th:replace="~{fragment :: meta}"></div>
+    <div th:replace="~{fragment :: styles}"></div>
+    <title>有料会員登録</title>
+</head>
+<body>
+    <div class="nagoyameshi-wrapper">
+        <div th:replace="~{fragment :: header}"></div>
+        <main>
+            <div class="container pt-4 pb-5 nagoyameshi-container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-3 col-lg-4 col-md-5 col-sm-7">
+                        <h1 class="mb-4 text-center">有料会員登録</h1>
+                        <script async src="https://js.stripe.com/v3/buy-button.js"></script>
+                        <stripe-buy-button
+                          buy-button-id="buy_btn_1Q28X3ENjJ7uZX1aePYzlUky"
+                          publishable-key="pk_test_51PhnYHENjJ7uZX1a07tUIvjuc3JcAnqKwnidR05fT26pKeWdhAJkhYx1B2pqzJePI3kGkFQHZPqDWbJbv6BYg9TJ00i5lsB3fH"
+                        >
+                        </stripe-buy-button>
+                        <!-- 戻るボタンを追加 -->
+                        <p>
+                            <a href="javascript:void(0)" onclick="fetchUpdatedRole();">前のページに戻る</a>
+                        </p>
+                        <script>
+                          function fetchUpdatedRole() {
+                            const userEmail = 'user@example.com'; // 実際のユーザーのメールアドレスに置き換えてください
+                        
+                            fetch(`/api/get-user-role?email=${userEmail}`)
+                              .then(response => response.json())
+                              .then(data => {
+                                if (data.role === 'ROLE_PAID') {  // ロールが "ROLE_PAID" か確認
+                                  alert('有料会員登録が確認されました。');
+                                  window.location.href = '/top-page';  // トップページへリダイレクト
+                                } else {
+                                  alert('有料会員登録がまだ確認されていません。');
+                                }
+                              })
+                              .catch(error => console.error('Error:', error));
+                          }
+                        
+                          
+                        
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <div th:replace="~{fragment :: footer}"></div>
+    </div>
+    <div th:replace="~{fragment :: scripts}"></div>
+</body>
+</html>
